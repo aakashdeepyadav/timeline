@@ -1,10 +1,11 @@
 package com.example.timeline.ui.screens
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Alarm
@@ -17,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.timeline.ui.theme.TaskTrackerTheme
 import com.example.timeline.util.AlarmService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AlarmActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +69,7 @@ class AlarmActivity : ComponentActivity() {
                         
                         Button(
                             onClick = {
-                                stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-                                finish()
+                                dismissAlarm(taskId)
                             },
                             modifier = Modifier.fillMaxWidth().height(64.dp),
                             shape = MaterialTheme.shapes.large
@@ -77,5 +80,30 @@ class AlarmActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun dismissAlarm(taskId: Int) {
+        // 1. Stop the ringing service
+        val serviceIntent = Intent(this, AlarmService::class.java)
+        stopService(serviceIntent)
+
+        // 2. Cancel the standard notification (from AlarmReceiver)
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        if (taskId != -1) {
+            notificationManager.cancel(taskId)
+        }
+
+        // 3. Clear repeat logic in DB
+        val database = com.example.timeline.data.local.AppDatabase.getDatabase(this)
+        @OptIn(kotlinx.coroutines.DelicateCoroutinesApi::class)
+        GlobalScope.launch(Dispatchers.IO) {
+            val task = database.taskDao().getTaskById(taskId)
+            if (task != null) {
+                database.taskDao().updateTask(task.copy(reminderRepeatCount = 0))
+            }
+        }
+
+        // 4. Close the activity
+        finish()
     }
 }
