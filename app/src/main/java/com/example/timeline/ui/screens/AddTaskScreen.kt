@@ -42,7 +42,8 @@ fun AddTaskScreen(
     var priority by remember { mutableStateOf(existingTask?.priority ?: Priority.MEDIUM) }
     var category by remember { mutableStateOf(existingTask?.category ?: "General") }
     var isReminderEnabled by remember { mutableStateOf(existingTask?.isReminderEnabled ?: false) }
-    var reminderOption by remember { mutableStateOf("At time of event") }
+    var reminderOffset by remember { mutableIntStateOf(existingTask?.reminderOffsetMinutes ?: 0) }
+    var repeatCount by remember { mutableIntStateOf(existingTask?.reminderRepeatCount ?: 1) }
 
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
@@ -239,17 +240,52 @@ fun AddTaskScreen(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
             ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Rounded.Notifications, null)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("Task Reminder", fontWeight = FontWeight.Bold)
-                        Text("Trigger notification at event time", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Rounded.Notifications, null)
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Task Reminder", fontWeight = FontWeight.Bold)
+                            Text("Ringing alarm for this task", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                        }
+                        Switch(checked = isReminderEnabled, onCheckedChange = { isReminderEnabled = it })
                     }
-                    Switch(checked = isReminderEnabled, onCheckedChange = { isReminderEnabled = it })
+                    
+                    if (isReminderEnabled) {
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.2f))
+                        
+                        Text("REMIND ME", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            listOf(0, 5, 15, 30).forEach { mins ->
+                                FilterChip(
+                                    selected = reminderOffset == mins,
+                                    onClick = { reminderOffset = mins },
+                                    label = { Text(if (mins == 0) "At time" else "$mins min before") }
+                                )
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Repeat Notification", fontWeight = FontWeight.Bold)
+                                Text("How many times to remind", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(onClick = { if (repeatCount > 1) repeatCount-- }) {
+                                    Icon(Icons.Rounded.Remove, null)
+                                }
+                                Text(repeatCount.toString(), fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
+                                IconButton(onClick = { if (repeatCount < 5) repeatCount++ }) {
+                                    Icon(Icons.Rounded.Add, null)
+                                }
+                            }
+                        }
+                    }
                 }
             }
             
@@ -258,7 +294,10 @@ fun AddTaskScreen(
             Button(
                 onClick = {
                     if (title.isNotBlank()) {
-                        val reminderTime = if (hasTime) time else null
+                        val finalTime = if (hasTime) time else date
+                        val reminderTime = if (isReminderEnabled) {
+                            finalTime - (reminderOffset * 60 * 1000L)
+                        } else null
                         
                         val taskToSave = TaskEntity(
                             id = existingTask?.id ?: 0,
@@ -272,6 +311,8 @@ fun AddTaskScreen(
                             priority = priority,
                             isReminderEnabled = isReminderEnabled,
                             reminderTime = reminderTime,
+                            reminderOffsetMinutes = reminderOffset,
+                            reminderRepeatCount = repeatCount,
                             createdAt = existingTask?.createdAt ?: System.currentTimeMillis()
                         )
                         

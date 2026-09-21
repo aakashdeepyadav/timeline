@@ -33,9 +33,11 @@ data class TaskEntity(
     val subtasks: List<String> = emptyList(),
     val isReminderEnabled: Boolean = false,
     val reminderTime: Long? = null,
+    val reminderOffsetMinutes: Int = 0,
+    val reminderRepeatCount: Int = 1,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
     val syncStatus: SyncStatus = SyncStatus.SYNCED,
     val deleted: Boolean = false,
-    val isSynced: Boolean = false // Legacy, keeping for compatibility during migration if needed
+    val isSynced: Boolean = false
 )

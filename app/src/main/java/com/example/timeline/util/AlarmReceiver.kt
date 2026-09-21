@@ -25,7 +25,48 @@ class AlarmReceiver : BroadcastReceiver() {
         val taskId = intent.getIntExtra("TASK_ID", -1)
         val taskTitle = intent.getStringExtra("TASK_TITLE") ?: "Task Reminder"
         
+        // Start persistent ringing service
+        val serviceIntent = Intent(context, AlarmService::class.java).apply {
+            putExtra("TASK_ID", taskId)
+            putExtra("TASK_TITLE", taskTitle)
+        }
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent)
+        } else {
+            context.startService(serviceIntent)
+        }
+
+        // Show the Ringing Screen
+        val activityIntent = Intent(context, com.example.timeline.ui.screens.AlarmActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("TASK_ID", taskId)
+            putExtra("TASK_TITLE", taskTitle)
+        }
+        context.startActivity(activityIntent)
+        
         showNotification(context, taskId, taskTitle)
+
+        // Check for repeat logic
+        handleRepeatLogic(context, taskId)
+    }
+
+    private fun handleRepeatLogic(context: Context, taskId: Int) {
+        val database = AppDatabase.getDatabase(context)
+        @OptIn(kotlinx.coroutines.DelicateCoroutinesApi::class)
+        GlobalScope.launch(Dispatchers.IO) {
+            val task = database.taskDao().getTaskById(taskId)
+            if (task != null && !task.isCompleted && task.isReminderEnabled && task.reminderRepeatCount > 1) {
+                // Schedule next repeat (5 mins later)
+                val nextTask = task.copy(
+                    reminderTime = System.currentTimeMillis() + (5 * 60 * 1000L),
+                    reminderRepeatCount = task.reminderRepeatCount - 1
+                )
+                // We update the task in DB so it knows how many repeats are left
+                database.taskDao().updateTask(nextTask)
+                AlarmScheduler.scheduleAlarm(context, nextTask)
+            }
+        }
     }
 
     private fun rescheduleAllAlarms(context: Context) {
