@@ -41,6 +41,7 @@ fun AddTaskScreen(
     var type by remember { mutableStateOf(existingTask?.type ?: TaskType.TASK) }
     var priority by remember { mutableStateOf(existingTask?.priority ?: Priority.MEDIUM) }
     var category by remember { mutableStateOf(existingTask?.category ?: "General") }
+    var isReminderEnabled by remember { mutableStateOf(existingTask?.isReminderEnabled ?: false) }
     var reminderOption by remember { mutableStateOf("At time of event") }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -234,9 +235,9 @@ fun AddTaskScreen(
             Spacer(modifier = Modifier.height(24.dp))
             
             Text("NOTIFICATIONS & REMINDER", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
-            OutlinedCard(
+            Card(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                onClick = { /* TODO: Show dropdown */ }
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -244,8 +245,11 @@ fun AddTaskScreen(
                 ) {
                     Icon(Icons.Rounded.Notifications, null)
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(reminderOption, modifier = Modifier.weight(1f))
-                    Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(16.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Task Reminder", fontWeight = FontWeight.Bold)
+                        Text("Trigger notification at event time", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    }
+                    Switch(checked = isReminderEnabled, onCheckedChange = { isReminderEnabled = it })
                 }
             }
             
@@ -266,6 +270,7 @@ fun AddTaskScreen(
                             type = type,
                             category = if (category.isBlank()) "General" else category,
                             priority = priority,
+                            isReminderEnabled = isReminderEnabled,
                             reminderTime = reminderTime,
                             createdAt = existingTask?.createdAt ?: System.currentTimeMillis()
                         )

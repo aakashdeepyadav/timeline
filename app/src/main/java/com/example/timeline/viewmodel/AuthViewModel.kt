@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.timeline.data.remote.FirebaseService
 import com.example.timeline.util.DataMode
 import com.example.timeline.util.PreferenceManager
+import com.example.timeline.util.ThemeMode
 import com.example.timeline.data.repository.TaskRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -33,6 +34,12 @@ class AuthViewModel(
         initialValue = 0L
     )
 
+    val themeMode: StateFlow<ThemeMode> = preferenceManager.themeMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ThemeMode.SYSTEM
+    )
+
     private val _currentUser = MutableStateFlow<FirebaseUser?>(firebaseService.getCurrentUser())
     val currentUser = _currentUser.asStateFlow()
 
@@ -59,6 +66,10 @@ class AuthViewModel(
         if (success) {
             preferenceManager.setLastSynced(System.currentTimeMillis())
         }
+    }
+
+    fun setThemeMode(mode: ThemeMode) = viewModelScope.launch {
+        preferenceManager.setThemeMode(mode)
     }
 
     fun signOut() = viewModelScope.launch {

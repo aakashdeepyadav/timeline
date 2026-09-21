@@ -1,22 +1,24 @@
 # TimeLine - Minimalistic Task Tracker
 
-TimeLine is a modern, premium Android application designed to help you manage your tasks, deadlines, and events in a beautiful, chronological interface. Built with **Kotlin** and **Jetpack Compose**, it follows the latest Android development best practices.
+TimeLine is a modern, premium Android application designed to help you manage your tasks, deadlines, and events in a beautiful, chronological interface. Built with **Kotlin** and **Jetpack Compose**, it follows a strictly minimalistic philosophy and the latest Android development best practices.
 
 ## ✨ Features
 
 - **Chronological Timeline**: View your life at a glance with a clean, vertical timeline.
-- **Minimalistic Design**: A premium UI focused on content with a bespoke "Deep Night" dark mode.
+- **Minimalistic Premium Design**: A high-end UI focused on content, featuring a bespoke "Deep Night" dark mode and modern **Rounded Icons**.
+- **Privacy-First (Google Drive Sync)**: Securely back up and sync your data across devices using your own Google Drive storage—zero server costs for the developer, maximum privacy and ownership for you.
 - **Offline-First**: All data is stored locally in a Room database, ensuring the app works 100% offline.
-- **Google Drive Sync**: Securely back up and sync your data across devices using your own Google Drive storage—no server costs, maximum privacy.
-- **Smart Filtering & Search**: Find exactly what you need with real-time search and category-based filtering.
-- **Reliable Reminders**: Set alarms for your most important tasks with high-priority notifications that persist even after device reboots.
+- **Smart Filtering & Search**: Find exactly what you need with real-time search across all views and category-based filtering.
+- **Reliable Reminders**: Set precise alarms for your most important tasks with high-priority notifications that persist even after device reboots.
+- **Customizable Appearance**: Choose between Light, Dark, or System Default themes from the settings.
+- **Clean Slate**: No predefined data—start your productivity journey with a minimalistic, production-ready interface.
 
 ## 🛠️ Technical Stack
 
-- **UI**: Jetpack Compose, Material 3
+- **UI**: Jetpack Compose, Material 3 (Rounded Style)
 - **Architecture**: MVVM (Model-View-ViewModel), Repository Pattern
-- **Persistence**: Room Database, DataStore
-- **Sync**: Google Drive REST API, WorkManager
+- **Persistence**: Room Database, DataStore (Preferences)
+- **Sync**: Google Drive REST API (App Data Folder), WorkManager
 - **Auth**: Firebase Authentication (Google Sign-In)
 - **Image Loading**: Coil
 - **Concurrency**: Kotlin Coroutines & Flow
@@ -50,7 +52,12 @@ TimeLine is a modern, premium Android application designed to help you manage yo
 
 ## 🛡️ Privacy
 
-TimeLine is built with privacy in mind. Your task data never touches our servers. When you choose to sync, your data is stored in a hidden, private folder on **your own Google Drive**, which only this application can access.
+TimeLine is built with privacy as a core value. Your task data never touches our servers. When you choose to sync, your data is stored in a hidden, private folder on **your own Google Drive** (`appDataFolder`), which only this application can access. You own your data.
+
+## 📧 Support
+
+For help, feedback, or business inquiries, please reach out to us at:
+**ady.playground@gmail.com**
 
 ## 📄 License
 

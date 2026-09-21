@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         @OptIn(kotlinx.coroutines.DelicateCoroutinesApi::class)
         GlobalScope.launch(Dispatchers.IO) {
             database.taskDao().getAllTasksSync().forEach { task ->
-                if (!task.isCompleted && task.reminderTime != null && task.reminderTime > System.currentTimeMillis()) {
+                if (!task.isCompleted && task.isReminderEnabled && task.reminderTime != null && task.reminderTime > System.currentTimeMillis()) {
                     AlarmScheduler.scheduleAlarm(context, task)
                 }
             }

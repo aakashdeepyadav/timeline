@@ -13,11 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.timeline.util.DataMode
+import com.example.timeline.util.ThemeMode
 import com.example.timeline.viewmodel.AuthViewModel
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,10 +31,40 @@ fun SettingsScreen(
     onSignInClick: () -> Unit,
     onProfileClick: () -> Unit
 ) {
+    val context = LocalContext.current
     val dataMode by authViewModel.dataMode.collectAsState()
     val lastSynced by authViewModel.lastSynced.collectAsState()
+    val themeMode by authViewModel.themeMode.collectAsState()
     val currentUserState by authViewModel.currentUser.collectAsState()
     val currentUser = currentUserState
+
+    var showThemeDialog by remember { mutableStateOf(false) }
+
+    if (showThemeDialog) {
+        AlertDialog(
+            onDismissRequest = { showThemeDialog = false },
+            title = { Text("Choose Theme") },
+            text = {
+                Column {
+                    ThemeOption("System Default", themeMode == ThemeMode.SYSTEM) {
+                        authViewModel.setThemeMode(ThemeMode.SYSTEM)
+                        showThemeDialog = false
+                    }
+                    ThemeOption("Light", themeMode == ThemeMode.LIGHT) {
+                        authViewModel.setThemeMode(ThemeMode.LIGHT)
+                        showThemeDialog = false
+                    }
+                    ThemeOption("Dark", themeMode == ThemeMode.DARK) {
+                        authViewModel.setThemeMode(ThemeMode.DARK)
+                        showThemeDialog = false
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showThemeDialog = false }) { Text("Close") }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -140,11 +175,31 @@ fun SettingsScreen(
                 shape = MaterialTheme.shapes.large
             ) {
                 Column {
-                    SettingsItem(icon = Icons.Rounded.Notifications, title = "Notifications")
+                    SettingsItem(icon = Icons.Rounded.Notifications, title = "Notifications") {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                            }
+                            context.startActivity(intent)
+                        } else {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", context.packageName, null)
+                            }
+                            context.startActivity(intent)
+                        }
+                    }
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                    SettingsItem(icon = Icons.Rounded.Palette, title = "Appearance")
+                    SettingsItem(icon = Icons.Rounded.Palette, title = "Appearance") {
+                        showThemeDialog = true
+                    }
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                    SettingsItem(icon = Icons.AutoMirrored.Rounded.HelpOutline, title = "Help & Feedback")
+                    SettingsItem(icon = Icons.AutoMirrored.Rounded.HelpOutline, title = "Help & Feedback") {
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:ady.playground@gmail.com")
+                            putExtra(Intent.EXTRA_SUBJECT, "TimeLine App Support")
+                        }
+                        context.startActivity(Intent.createChooser(intent, "Send Email"))
+                    }
                 }
             }
             
@@ -162,11 +217,26 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsItem(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String) {
+fun ThemeOption(text: String, isSelected: Boolean, onSelect: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ }
+            .clickable { onSelect() }
+            .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = isSelected, onClick = onSelect)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
+@Composable
+fun SettingsItem(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

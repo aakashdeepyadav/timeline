@@ -9,6 +9,10 @@ import com.example.timeline.data.local.TaskEntity
 
 object AlarmScheduler {
     fun scheduleAlarm(context: Context, task: TaskEntity) {
+        if (!task.isReminderEnabled) {
+            cancelAlarm(context, task)
+            return
+        }
         val reminderTime = task.reminderTime ?: return
         if (reminderTime <= System.currentTimeMillis()) return
 

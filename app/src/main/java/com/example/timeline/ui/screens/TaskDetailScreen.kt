@@ -217,7 +217,7 @@ fun DetailInfoSection(task: com.example.timeline.data.local.TaskEntity) {
         if (!task.location.isNullOrBlank()) {
             InfoRow(Icons.Rounded.LocationOn, "LOCATION", task.location)
         }
-        if (task.reminderTime != null) {
+        if (task.isReminderEnabled && task.reminderTime != null) {
             InfoRow(Icons.Rounded.Notifications, "REMINDERS SCHEDULED", "At time of event")
         }
     }

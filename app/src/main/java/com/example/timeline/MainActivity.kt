@@ -27,9 +27,11 @@ import com.example.timeline.ui.screens.*
 import com.example.timeline.ui.theme.TaskTrackerTheme
 import com.example.timeline.util.DataMode
 import com.example.timeline.util.PreferenceManager
+import com.example.timeline.util.ThemeMode
 import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.viewmodel.TaskViewModel
 import com.example.timeline.viewmodel.TaskViewModelFactory
+import androidx.compose.foundation.isSystemInDarkTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var authViewModel: AuthViewModel
@@ -78,10 +80,17 @@ class MainActivity : ComponentActivity() {
         }
         
         setContent {
-            TaskTrackerTheme {
-                val viewModel: TaskViewModel = viewModel(factory = factory)
-                authViewModel = viewModel(factory = factory)
-                
+            val viewModel: TaskViewModel = viewModel(factory = factory)
+            authViewModel = viewModel(factory = factory)
+            
+            val themeMode by authViewModel.themeMode.collectAsStateWithLifecycle()
+            val darkTheme = when (themeMode) {
+                ThemeMode.LIGHT -> false
+                ThemeMode.DARK -> true
+                ThemeMode.SYSTEM -> isSystemInDarkTheme()
+            }
+
+            TaskTrackerTheme(darkTheme = darkTheme) {
                 val dataMode by authViewModel.dataMode.collectAsStateWithLifecycle()
                 val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
                 
