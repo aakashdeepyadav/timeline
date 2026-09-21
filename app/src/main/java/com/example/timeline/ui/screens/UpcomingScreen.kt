@@ -26,6 +26,9 @@ import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.viewmodel.TaskViewModel
 
+import androidx.compose.ui.res.painterResource
+import com.example.timeline.R
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpcomingScreen(
@@ -59,7 +62,18 @@ fun UpcomingScreen(
                 )
             } else {
                 CenterAlignedTopAppBar(
-                    title = { Text("Upcoming", fontWeight = FontWeight.Bold) },
+                    title = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.timeline_white_bg),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Upcoming", fontWeight = FontWeight.Bold)
+                        }
+                    },
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(Icons.Rounded.Search, contentDescription = "Search")

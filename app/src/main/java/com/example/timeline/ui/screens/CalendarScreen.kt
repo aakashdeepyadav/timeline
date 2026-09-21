@@ -28,6 +28,9 @@ import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.viewmodel.TaskViewModel
 import java.util.Calendar
 
+import androidx.compose.ui.res.painterResource
+import com.example.timeline.R
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
@@ -62,9 +65,18 @@ fun CalendarScreen(
             } else {
                 TopAppBar(
                     title = { 
-                        Column {
-                            Text("TimeLine", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                            Text("Calendar", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.timeline_white_bg),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                Text("TimeLine", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                                Text("Calendar", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
                     },
                     actions = {

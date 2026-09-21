@@ -25,6 +25,9 @@ import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.TaskViewModel
 import java.util.Calendar
 
+import androidx.compose.ui.res.painterResource
+import com.example.timeline.R
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -130,9 +133,9 @@ fun HomeTopBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    imageVector = Icons.Rounded.FilterList,
+                    painter = painterResource(id = R.drawable.timeline_white_bg),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = Color.Unspecified,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))

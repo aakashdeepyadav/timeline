@@ -4,15 +4,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.timeline.R
+import com.example.timeline.data.local.TaskEntity
 import com.example.timeline.ui.components.TaskCard
 import com.example.timeline.viewmodel.TaskViewModel
 
@@ -20,7 +24,8 @@ import com.example.timeline.viewmodel.TaskViewModel
 @Composable
 fun CompletedScreen(
     viewModel: TaskViewModel,
-    onTaskClick: (Int) -> Unit
+    onTaskClick: (Int) -> Unit,
+    onProfileClick: () -> Unit
 ) {
     val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
     val completedTasks = tasks.filter { it.isCompleted }.sortedByDescending { it.date }
@@ -28,10 +33,21 @@ fun CompletedScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Completed", fontWeight = FontWeight.Bold) },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.timeline_white_bg),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Completed", fontWeight = FontWeight.Bold)
+                    }
+                },
                 actions = {
-                    IconButton(onClick = { /* TODO */ }) {
-                        Icon(Icons.Default.History, contentDescription = "History")
+                    IconButton(onClick = onProfileClick) {
+                        Icon(Icons.Rounded.Person, contentDescription = "Profile")
                     }
                 }
             )

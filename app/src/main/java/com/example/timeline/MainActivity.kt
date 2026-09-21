@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
     private var showSyncDialog by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
@@ -246,7 +248,8 @@ fun TaskTrackerApp(
             composable("completed") {
                 CompletedScreen(
                     viewModel = viewModel,
-                    onTaskClick = { taskId: Int -> navController.navigate("task_detail/$taskId") }
+                    onTaskClick = { taskId: Int -> navController.navigate("task_detail/$taskId") },
+                    onProfileClick = { navController.navigate("profile") }
                 )
             }
             composable("settings") {

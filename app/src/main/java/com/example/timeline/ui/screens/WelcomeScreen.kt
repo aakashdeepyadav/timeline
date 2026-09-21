@@ -12,6 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+import androidx.compose.ui.res.painterResource
+import com.example.timeline.R
+
 @Composable
 fun WelcomeScreen(
     onContinueWithGoogle: () -> Unit,
@@ -26,10 +29,10 @@ fun WelcomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Rounded.Timeline,
+                painter = painterResource(id = R.drawable.timeline_white_bg),
                 contentDescription = null,
-                modifier = Modifier.size(100.dp),
-                tint = MaterialTheme.colorScheme.primary
+                modifier = Modifier.size(120.dp),
+                tint = Color.Unspecified
             )
             
             Spacer(modifier = Modifier.height(24.dp))
