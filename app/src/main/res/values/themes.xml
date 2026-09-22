@@ -6,7 +6,7 @@
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#FFFFFF</item>
         <item name="windowSplashScreenIconBackgroundColor">#FFFFFF</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_animation</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_animation</item>
         <item name="postSplashScreenTheme">@style/Theme.TaskTracker</item>
     </style>
 </resources>

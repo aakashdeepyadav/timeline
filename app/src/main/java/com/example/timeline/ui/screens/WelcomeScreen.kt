@@ -51,7 +51,8 @@ fun WelcomeScreen(
                 Icon(
                     painter = painterResource(R.drawable.google),
                     contentDescription = "Google",
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
+                    tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text("Continue with Google", fontWeight = FontWeight.Bold)
