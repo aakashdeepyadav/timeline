@@ -22,10 +22,10 @@ class AuthViewModel(
     private val repository: TaskRepository
 ) : ViewModel() {
 
-    val dataMode: StateFlow<DataMode> = preferenceManager.dataMode.stateIn(
+    val dataMode: StateFlow<DataMode?> = preferenceManager.dataMode.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = DataMode.UNSET
+        initialValue = null
     )
     
     val lastSynced: StateFlow<Long> = preferenceManager.lastSynced.stateIn(
@@ -37,7 +37,7 @@ class AuthViewModel(
     val themeMode: StateFlow<ThemeMode> = preferenceManager.themeMode.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ThemeMode.SYSTEM
+        initialValue = ThemeMode.LIGHT
     )
 
     private val _currentUser = MutableStateFlow<FirebaseUser?>(firebaseService.getCurrentUser())

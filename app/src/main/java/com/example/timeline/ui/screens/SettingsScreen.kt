@@ -39,6 +39,8 @@ fun SettingsScreen(
     val currentUser = currentUserState
 
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showHelpAndFeedback by remember { mutableStateOf(false) }
+    val supportEmail = "ady.playground@gmail.com"
 
     if (showThemeDialog) {
         AlertDialog(
@@ -193,12 +195,38 @@ fun SettingsScreen(
                         showThemeDialog = true
                     }
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                    SettingsItem(icon = Icons.AutoMirrored.Rounded.HelpOutline, title = "Help & Feedback") {
-                        val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:ady.playground@gmail.com")
-                            putExtra(Intent.EXTRA_SUBJECT, "TimeLine App Support")
+                    SettingsItem(
+                        icon = Icons.AutoMirrored.Rounded.HelpOutline,
+                        title = "Help & Feedback",
+                        onClick = { showHelpAndFeedback = !showHelpAndFeedback }
+                    )
+                    if (showHelpAndFeedback) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse("mailto:$supportEmail")
+                                        putExtra(Intent.EXTRA_SUBJECT, "TimeLine App Support")
+                                    }
+                                    context.startActivity(Intent.createChooser(intent, "Send Email"))
+                                }
+                                .padding(start = 64.dp, end = 16.dp, bottom = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Rounded.Email,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                supportEmail,
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
-                        context.startActivity(Intent.createChooser(intent, "Send Email"))
                     }
                 }
             }
@@ -206,7 +234,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.weight(1f))
             
             Text(
-                "Version 1.0.0",
+                "Version 1.0.1",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 style = MaterialTheme.typography.labelSmall,

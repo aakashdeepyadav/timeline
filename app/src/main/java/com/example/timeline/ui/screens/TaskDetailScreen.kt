@@ -17,9 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.core.content.FileProvider
 import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.TaskViewModel
+import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,6 +37,8 @@ fun TaskDetailScreen(
 ) {
     val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
     val task = tasks.find { it.id == taskId }
+    val context = LocalContext.current
+    val view = LocalView.current
 
     if (task == null) {
         LaunchedEffect(Unit) { onNavigateBack() }
@@ -48,8 +55,11 @@ fun TaskDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Share */ }) { Icon(Icons.Rounded.Share, null) }
-                    IconButton(onClick = { /* Bookmark */ }) { Icon(Icons.Rounded.BookmarkBorder, null) }
+                    IconButton(onClick = {
+                        shareTaskImage(context, view)
+                    }) {
+                        Icon(Icons.Rounded.Share, contentDescription = "Share task")
+                    }
                     IconButton(onClick = { 
                         viewModel.delete(task)
                         onNavigateBack()
@@ -61,7 +71,7 @@ fun TaskDetailScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
         ) {
@@ -120,9 +130,13 @@ fun TaskDetailScreen(
                     modifier = Modifier.padding(top = 8.dp, bottom = 32.dp)
                 )
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
             
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 32.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Button(
@@ -147,6 +161,47 @@ fun TaskDetailScreen(
                 }
             }
         }
+    }
+}
+
+private fun shareTaskImage(context: android.content.Context, view: android.view.View) {
+    view.post {
+        val fullBitmap = android.graphics.Bitmap.createBitmap(
+            view.width,
+            view.height,
+            android.graphics.Bitmap.Config.ARGB_8888
+        )
+        view.draw(android.graphics.Canvas(fullBitmap))
+
+        val toolbarHeight = (88 * context.resources.displayMetrics.density).toInt()
+            .coerceAtMost(fullBitmap.height)
+        val contentBitmap = android.graphics.Bitmap.createBitmap(
+            fullBitmap,
+            0,
+            toolbarHeight,
+            fullBitmap.width,
+            fullBitmap.height - toolbarHeight
+        )
+        fullBitmap.recycle()
+
+        val imageFile = File(context.cacheDir, "shared_tasks").apply { mkdirs() }
+            .resolve("task_${System.currentTimeMillis()}.png")
+        FileOutputStream(imageFile).use { output ->
+            contentBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, output)
+        }
+        contentBitmap.recycle()
+
+        val imageUri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            imageFile
+        )
+        val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(android.content.Intent.EXTRA_STREAM, imageUri)
+            addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(android.content.Intent.createChooser(shareIntent, "Share task"))
     }
 }
 

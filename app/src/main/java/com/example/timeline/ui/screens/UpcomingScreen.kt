@@ -62,7 +62,7 @@ fun UpcomingScreen(
                     }
                 )
             } else {
-                CenterAlignedTopAppBar(
+                TopAppBar(
                     title = { Text("Upcoming", fontWeight = FontWeight.Bold) },
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) {
@@ -153,13 +153,6 @@ fun UpcomingAgendaCard(tasks: List<TaskEntity>) {
     val examsCount = tasks.count { it.type == TaskType.EXAM }
 
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
-        Text(
-            "Upcoming",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        
         Row(
             modifier = Modifier
                 .padding(top = 20.dp)

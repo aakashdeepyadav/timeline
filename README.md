@@ -1,6 +1,49 @@
 # TimeLine - Minimalistic Task Tracker
 
+<p align="center">
+  <img src="app/src/main/res/drawable/icon_logo.png" alt="TimeLine logo" width="180" />
+</p>
+
 TimeLine is a modern, premium Android application designed to help you manage your tasks, deadlines, and events in a beautiful, chronological interface. Built with **Kotlin** and **Jetpack Compose**, it follows a strictly minimalistic philosophy and the latest Android development best practices.
+
+## 🚀 TimeLine v1.0.1 - UI and Branding Improvements
+
+TimeLine v1.0.1 improves the visual experience, branding, and usability while preserving the offline-first architecture and Google Drive synchronization.
+
+### ✨ Key Features
+
+- **Chronological Timeline**: Track tasks, exams, deadlines, meetings, and events in a visual vertical timeline.
+- **Privacy-First Cloud Sync**: Back up data to your private Google Drive App Data folder.
+- **Premium Dark Mode**: Use the custom dark theme for a comfortable, modern experience.
+- **Intelligent Reminders**: Receive high-priority alarms and notifications for important tasks.
+- **Real-time Search**: Filter tasks by title, description, or category.
+- **Google Integration**: Sign in with Google to use profile details and cross-device syncing.
+
+### 🎨 UI and Branding Improvements
+
+- Updated the shared productivity palette with blue, slate, teal, and navy brand colors.
+- Added a white splash screen with the full `logo_animation.gif` preserved at its original aspect ratio.
+- Added the multicolor Google logo to the Google sign-in button.
+- Standardized the branded `+` floating action button across Home, Calendar, Upcoming, and Completed.
+- Improved button contrast, spacing, elevation, and accessibility labels.
+
+### 🛠️ Technical Highlights
+
+- Built with Jetpack Compose and Material 3.
+- MVVM architecture with repository-based data access.
+- Room as the local source of truth.
+- WorkManager for background synchronization.
+- Firebase Authentication for secure Google login.
+
+### 📦 Installation
+
+1. Download the `timeline-v1.0.1.apk` release artifact.
+2. Enable installation from unknown sources if required by your Android device.
+3. Install the APK and start planning your timeline.
+
+When building from source, provide a valid `google-services.json` file in the `app/` directory.
+
+See [TimeLine v1.0.0](https://github.com/aakashdeepyadav/timeline/releases/tag/v1.0.0) for the initial stable release.
 
 ## ✨ Features
 

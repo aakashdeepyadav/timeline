@@ -2,6 +2,7 @@ package com.example.timeline.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Timeline
 import androidx.compose.material3.*
@@ -29,6 +30,14 @@ fun WelcomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(
+                painter = painterResource(R.drawable.icon_logo),
+                contentDescription = "TimeLine logo",
+                modifier = Modifier.size(112.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text(
                 "TimeLine",
                 style = MaterialTheme.typography.displayMedium,

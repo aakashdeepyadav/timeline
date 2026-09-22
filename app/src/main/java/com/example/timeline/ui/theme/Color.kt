@@ -2,32 +2,32 @@ package com.example.timeline.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Modern productivity palette from the supplied visual reference.
-val BrandBlue = Color(0xFF2B50ED)
+// Core brand palette.
+val BrandBlue = Color(0xFF15B3FD)
 val BrandIndigo = BrandBlue
-val BrandSlate = Color(0xFF475569)
-val BrandTeal = Color(0xFF0D9488)
-val BrandNavy = Color(0xFF111827)
+val BrandSlate = Color(0xFF000000)
+val BrandTeal = BrandBlue
+val BrandNavy = Color(0xFF000000)
 val BrandRed = Color(0xFFDC2626)
 
-val BackgroundLight = Color(0xFFF1F5FF)
-val SurfaceLight = Color(0xFFE7ECFF)
+val BackgroundLight = Color(0xFFF4FAFD)
+val SurfaceLight = Color.White
 val PrimaryLight = BrandBlue
 val OnBackgroundLight = BrandNavy
 val OnSurfaceLight = BrandNavy
 val OnSurfaceVariantLight = BrandSlate
-val OutlineLight = Color(0xFFC7D2FE)
+val OutlineLight = Color(0xFFB8E7FF)
 
-val BackgroundDark = Color(0xFF111827)
-val SurfaceDark = Color(0xFF1E293B)
-val PrimaryDark = Color(0xFF6D86FF)
-val OnBackgroundDark = Color(0xFFF8FAFC)
-val OnSurfaceDark = Color(0xFFF8FAFC)
-val OnSurfaceVariantDark = Color(0xFFCBD5E1)
-val OutlineDark = Color(0xFF475569)
+val BackgroundDark = Color(0xFF101820)
+val SurfaceDark = Color(0xFF182631)
+val PrimaryDark = BrandBlue
+val OnBackgroundDark = Color(0xFFF3F8FC)
+val OnSurfaceDark = Color(0xFFF3F8FC)
+val OnSurfaceVariantDark = Color(0xFFB7C6D1)
+val OutlineDark = Color(0xFF344956)
 
 // Semantic Accents
 val AccentTeal = BrandTeal
-val AccentPurple = Color(0xFF6366F1)
+val AccentPurple = BrandBlue
 val AccentRed = BrandRed
 val AccentIndigo = BrandBlue

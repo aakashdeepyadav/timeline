@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,27 +18,29 @@ import com.example.timeline.R
 import com.example.timeline.data.local.TaskEntity
 import com.example.timeline.ui.components.TaskCard
 import com.example.timeline.ui.components.AddTaskFab
+import com.example.timeline.ui.components.ProfileIconButton
+import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompletedScreen(
     viewModel: TaskViewModel,
+    authViewModel: AuthViewModel,
     onAddTaskClick: () -> Unit,
     onTaskClick: (Int) -> Unit,
     onProfileClick: () -> Unit
 ) {
     val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
+    val currentUser by authViewModel.currentUser.collectAsStateWithLifecycle()
     val completedTasks = tasks.filter { it.isCompleted }.sortedByDescending { it.date }
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 title = { Text("Completed", fontWeight = FontWeight.Bold) },
                 actions = {
-                    IconButton(onClick = onProfileClick) {
-                        Icon(Icons.Rounded.Person, contentDescription = "Profile")
-                    }
+                    ProfileIconButton(user = currentUser, onClick = onProfileClick)
                 }
             )
         },
@@ -84,13 +85,6 @@ fun CompletedScreen(
 @Composable
 fun VelocityCard(completedCount: Int) {
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
-        Text(
-            "Completed",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        
         Spacer(modifier = Modifier.height(24.dp))
         
         Row(

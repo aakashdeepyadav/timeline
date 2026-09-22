@@ -14,9 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -38,7 +36,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var authViewModel: AuthViewModel
-    private var keepSplashScreen = true
+    private var dataModeLoaded by mutableStateOf(false)
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -68,13 +66,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { keepSplashScreen }
-        
-        lifecycleScope.launch {
-            kotlinx.coroutines.delay(3000)
-            keepSplashScreen = false
-        }
-
+        splashScreen.setKeepOnScreenCondition { !dataModeLoaded }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
@@ -95,7 +87,13 @@ class MainActivity : ComponentActivity() {
             val viewModel: TaskViewModel = viewModel(factory = factory)
             authViewModel = viewModel(factory = factory)
             
+            val dataMode by authViewModel.dataMode.collectAsStateWithLifecycle()
             val themeMode by authViewModel.themeMode.collectAsStateWithLifecycle()
+            LaunchedEffect(dataMode) {
+                if (dataMode != null) {
+                    dataModeLoaded = true
+                }
+            }
             val darkTheme = when (themeMode) {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
@@ -103,10 +101,9 @@ class MainActivity : ComponentActivity() {
             }
 
             TaskTrackerTheme(darkTheme = darkTheme) {
-                val dataMode by authViewModel.dataMode.collectAsStateWithLifecycle()
                 val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
                 
-                if (dataMode == DataMode.UNSET) {
+                if (dataMode == null || dataMode == DataMode.UNSET) {
                     WelcomeScreen(
                         onContinueWithGoogle = { startGoogleSignIn() },
                         onUseOfflineMode = { authViewModel.setOfflineMode() }
@@ -258,6 +255,7 @@ fun TaskTrackerApp(
             composable("completed") {
                 CompletedScreen(
                     viewModel = viewModel,
+                    authViewModel = authViewModel,
                     onAddTaskClick = { navController.navigate("add_task") },
                     onTaskClick = { taskId: Int -> navController.navigate("task_detail/$taskId") },
                     onProfileClick = { navController.navigate("profile") }

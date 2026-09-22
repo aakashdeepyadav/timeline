@@ -76,7 +76,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             item {
-                DashboardHeader()
+                DashboardHeader(currentUser)
             }
             
             item {
@@ -139,10 +139,16 @@ fun HomeTopBar(
 }
 
 @Composable
-fun DashboardHeader() {
+fun DashboardHeader(user: com.google.firebase.auth.FirebaseUser?) {
+    val timelineTitle = user?.displayName
+        ?.substringBefore(" ")
+        ?.takeIf { it.isNotBlank() }
+        ?.let { "$it's Timeline" }
+        ?: "My Timeline"
+
     Column(modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)) {
         Text(
-            "My Timeline",
+            timelineTitle,
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
             color = MaterialTheme.colorScheme.onSurface
         )

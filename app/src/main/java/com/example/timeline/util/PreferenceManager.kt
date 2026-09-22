@@ -34,7 +34,7 @@ class PreferenceManager(private val context: Context) {
     }
 
     val themeMode: Flow<ThemeMode> = context.dataStore.data.map { preferences ->
-        val themeStr = preferences[THEME_MODE_KEY] ?: ThemeMode.SYSTEM.name
+        val themeStr = preferences[THEME_MODE_KEY] ?: ThemeMode.LIGHT.name
         ThemeMode.valueOf(themeStr)
     }
 
