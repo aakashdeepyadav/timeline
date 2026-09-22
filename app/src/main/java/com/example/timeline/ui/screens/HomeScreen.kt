@@ -18,15 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.timeline.data.local.TaskEntity
 import com.example.timeline.data.local.TaskType
+import com.example.timeline.ui.theme.*
 import com.example.timeline.ui.components.DateHeader
 import com.example.timeline.ui.components.*
 import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.TaskViewModel
 import java.util.Calendar
-
-import androidx.compose.ui.res.painterResource
-import com.example.timeline.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,14 +66,7 @@ fun HomeScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddTaskClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Icon(Icons.Rounded.Add, contentDescription = "Add Task")
-            }
+            AddTaskFab(onClick = onAddTaskClick)
         }
     ) { padding ->
         LazyColumn(
@@ -131,19 +122,12 @@ fun HomeTopBar(
 ) {
     TopAppBar(
         title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.timeline_white_bg),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    Text("TimeLine", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                    Text("Timeline", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
+            Text(
+                "TimeLine",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         },
         actions = {
             IconButton(onClick = onSearchClick) {
@@ -161,11 +145,6 @@ fun DashboardHeader() {
             "My Timeline",
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
             color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            "Focus on your next task.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -254,14 +233,14 @@ fun SummaryBadges(tasks: List<TaskEntity>) {
 
     Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = Modifier.size(8.dp).background(Color.Blue, CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(BrandIndigo, CircleShape))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("$todayTasks tasks today", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("$todayTasks Today", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = Modifier.size(8.dp).background(Color.Red, CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(BrandRed, CircleShape))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("$deadlines deadline", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("$deadlines Deadline", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }

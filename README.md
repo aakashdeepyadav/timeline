@@ -5,12 +5,14 @@ TimeLine is a modern, premium Android application designed to help you manage yo
 ## ✨ Features
 
 - **Chronological Timeline**: View your life at a glance with a clean, vertical timeline.
-- **Minimalistic Premium Design**: A high-end UI focused on content, featuring a bespoke "Deep Night" dark mode and modern **Rounded Icons**.
+- **Modern Productivity Design**: A focused Material 3 interface inspired by the supplied design system, with primary blue, slate secondary, teal accents, navy neutrals, and clean sans-serif typography.
 - **Privacy-First (Google Drive Sync)**: Securely back up and sync your data across devices using your own Google Drive storage—zero server costs for the developer, maximum privacy and ownership for you.
 - **Offline-First**: All data is stored locally in a Room database, ensuring the app works 100% offline.
 - **Smart Filtering & Search**: Find exactly what you need with real-time search across all views and category-based filtering.
 - **Reliable Reminders**: Set precise alarms for your most important tasks with high-priority notifications that persist even after device reboots.
-- **Customizable Appearance**: Choose between Light, Dark, or System Default themes from the settings.
+- **Customizable Appearance**: Choose between Light, Dark, or System Default themes from the settings while retaining the shared brand palette.
+- **Consistent Add Actions**: A clearly visible, branded `+` floating action button is available in the Home, Calendar, Upcoming, and Completed sections.
+- **Animated Splash Screen**: The app opens with `logo_animation.gif` on a white background in both light and dark device themes.
 - **Clean Slate**: No predefined data—start your productivity journey with a minimalistic, production-ready interface.
 
 ## 🛠️ Technical Stack
@@ -22,6 +24,17 @@ TimeLine is a modern, premium Android application designed to help you manage yo
 - **Auth**: Firebase Authentication (Google Sign-In)
 - **Image Loading**: Coil
 - **Concurrency**: Kotlin Coroutines & Flow
+
+## 🎨 Design System
+
+The interface uses a shared productivity-focused palette:
+
+- **Primary**: Blue `#2B50ED`
+- **Secondary**: Slate `#475569`
+- **Tertiary**: Teal `#0D9488`
+- **Neutral**: Navy `#111827`
+
+The add-task floating action button uses the primary blue with a high-contrast white add icon and consistent rounded elevation across task sections.
 
 ## 🚀 Getting Started
 

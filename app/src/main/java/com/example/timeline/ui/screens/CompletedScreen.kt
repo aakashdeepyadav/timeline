@@ -18,12 +18,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.timeline.R
 import com.example.timeline.data.local.TaskEntity
 import com.example.timeline.ui.components.TaskCard
+import com.example.timeline.ui.components.AddTaskFab
 import com.example.timeline.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompletedScreen(
     viewModel: TaskViewModel,
+    onAddTaskClick: () -> Unit,
     onTaskClick: (Int) -> Unit,
     onProfileClick: () -> Unit
 ) {
@@ -33,24 +35,16 @@ fun CompletedScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.timeline_white_bg),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Completed", fontWeight = FontWeight.Bold)
-                    }
-                },
+                title = { Text("Completed", fontWeight = FontWeight.Bold) },
                 actions = {
                     IconButton(onClick = onProfileClick) {
                         Icon(Icons.Rounded.Person, contentDescription = "Profile")
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            AddTaskFab(onClick = onAddTaskClick)
         }
     ) { padding ->
         LazyColumn(
@@ -91,15 +85,10 @@ fun CompletedScreen(
 fun VelocityCard(completedCount: Int) {
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
         Text(
-            "Accomplishments",
+            "Completed",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            "Review your completed timeline.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         Spacer(modifier = Modifier.height(24.dp))

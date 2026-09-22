@@ -14,7 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -36,7 +38,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var authViewModel: AuthViewModel
-    
+    private var keepSplashScreen = true
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -64,7 +67,14 @@ class MainActivity : ComponentActivity() {
     private var showSyncDialog by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { keepSplashScreen }
+        
+        lifecycleScope.launch {
+            kotlinx.coroutines.delay(3000)
+            keepSplashScreen = false
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
@@ -248,6 +258,7 @@ fun TaskTrackerApp(
             composable("completed") {
                 CompletedScreen(
                     viewModel = viewModel,
+                    onAddTaskClick = { navController.navigate("add_task") },
                     onTaskClick = { taskId: Int -> navController.navigate("task_detail/$taskId") },
                     onProfileClick = { navController.navigate("profile") }
                 )

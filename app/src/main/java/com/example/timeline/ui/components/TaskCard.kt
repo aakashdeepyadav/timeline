@@ -31,8 +31,8 @@ fun TaskCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.surface,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        tonalElevation = 1.dp
+        border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -129,9 +129,9 @@ fun InfoItem(icon: ImageVector, text: String) {
 
 fun getPriorityColor(priority: Priority): Color {
     return when (priority) {
-        Priority.HIGH -> Color(0xFFFF5252)
-        Priority.MEDIUM -> Color(0xFFFFAB40)
-        Priority.LOW -> Color(0xFF69F0AE)
+        Priority.HIGH -> Color(0xFFEF233C)
+        Priority.MEDIUM -> Color(0xFFFFB703)
+        Priority.LOW -> Color(0xFF2ECC71)
     }
 }
 

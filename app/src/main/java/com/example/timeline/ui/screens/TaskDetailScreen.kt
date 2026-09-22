@@ -112,7 +112,7 @@ fun TaskDetailScreen(
 
             if (!task.description.isNullOrBlank()) {
                 Spacer(modifier = Modifier.height(24.dp))
-                Text("Instructions & Coverage", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("Description", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
                     task.description,
                     style = MaterialTheme.typography.bodyMedium,

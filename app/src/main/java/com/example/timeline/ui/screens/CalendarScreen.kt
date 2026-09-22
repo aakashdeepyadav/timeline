@@ -23,6 +23,7 @@ import com.example.timeline.data.local.TaskEntity
 import com.example.timeline.ui.components.ProfileIconButton
 import com.example.timeline.ui.components.SearchTopBar
 import com.example.timeline.ui.components.TimelineItem
+import com.example.timeline.ui.components.AddTaskFab
 import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.AuthViewModel
 import com.example.timeline.viewmodel.TaskViewModel
@@ -65,19 +66,12 @@ fun CalendarScreen(
             } else {
                 TopAppBar(
                     title = { 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.timeline_white_bg),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column {
-                                Text("TimeLine", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                                Text("Calendar", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            }
-                        }
+                        Text(
+                            "Calendar",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     },
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) { Icon(Icons.Rounded.Search, null) }
@@ -87,9 +81,7 @@ fun CalendarScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddTaskClick) {
-                Icon(Icons.Rounded.Add, null)
-            }
+            AddTaskFab(onClick = onAddTaskClick)
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {

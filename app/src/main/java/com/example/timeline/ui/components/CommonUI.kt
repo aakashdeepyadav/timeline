@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
@@ -16,6 +17,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseUser
+
+import androidx.compose.ui.res.painterResource
+import com.example.timeline.R
+
+@Composable
+fun AddTaskFab(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        elevation = FloatingActionButtonDefaults.elevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 8.dp
+        )
+    ) {
+        Icon(Icons.Rounded.Add, contentDescription = "Add Task")
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -21,6 +21,7 @@ import com.example.timeline.ui.components.ProfileIconButton
 import com.example.timeline.ui.components.SearchTopBar
 import com.example.timeline.ui.components.TimelineItem
 import com.example.timeline.ui.components.getIconForType
+import com.example.timeline.ui.components.AddTaskFab
 import com.example.timeline.ui.theme.*
 import com.example.timeline.util.DateUtils
 import com.example.timeline.viewmodel.AuthViewModel
@@ -62,18 +63,7 @@ fun UpcomingScreen(
                 )
             } else {
                 CenterAlignedTopAppBar(
-                    title = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.timeline_white_bg),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Upcoming", fontWeight = FontWeight.Bold)
-                        }
-                    },
+                    title = { Text("Upcoming", fontWeight = FontWeight.Bold) },
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(Icons.Rounded.Search, contentDescription = "Search")
@@ -84,9 +74,7 @@ fun UpcomingScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddTaskClick) {
-                Icon(Icons.Rounded.Add, contentDescription = "Add Task")
-            }
+            AddTaskFab(onClick = onAddTaskClick)
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
@@ -166,15 +154,10 @@ fun UpcomingAgendaCard(tasks: List<TaskEntity>) {
 
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
         Text(
-            "Upcoming Agenda",
+            "Upcoming",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            "Track your future milestones.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         Row(
@@ -183,8 +166,8 @@ fun UpcomingAgendaCard(tasks: List<TaskEntity>) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            StatItem(count = highPriorityCount, label = "Priority", color = AccentRed)
-            StatItem(count = examsCount, label = "Exams", color = AccentPurple)
+            StatItem(count = highPriorityCount, label = "Priority", color = BrandRed)
+            StatItem(count = examsCount, label = "Exams", color = BrandIndigo)
         }
     }
 }

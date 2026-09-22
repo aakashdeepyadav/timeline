@@ -2,26 +2,32 @@ package com.example.timeline.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Minimalistic Premium Palette - Light
-val BackgroundLight = Color(0xFFFBFBFE)
-val SurfaceLight = Color(0xFFFFFFFF)
-val PrimaryLight = Color(0xFF2D5AF0) // Modern Electric Blue
-val OnBackgroundLight = Color(0xFF1A1C1E)
-val OnSurfaceLight = Color(0xFF1A1C1E)
-val OnSurfaceVariantLight = Color(0xFF5C5F62)
-val OutlineLight = Color(0xFFE1E2E5)
+// Modern productivity palette from the supplied visual reference.
+val BrandBlue = Color(0xFF2B50ED)
+val BrandIndigo = BrandBlue
+val BrandSlate = Color(0xFF475569)
+val BrandTeal = Color(0xFF0D9488)
+val BrandNavy = Color(0xFF111827)
+val BrandRed = Color(0xFFDC2626)
 
-// Minimalistic Premium Palette - Dark (Deep Navy/Charcoal)
-val BackgroundDark = Color(0xFF0F111A) // Deep Night
-val SurfaceDark = Color(0xFF161926) // Soft Charcoal Navy
-val PrimaryDark = Color(0xFF7090FF) // Soft Electric Blue
-val OnBackgroundDark = Color(0xFFE2E2E6)
-val OnSurfaceDark = Color(0xFFE2E2E6)
-val OnSurfaceVariantDark = Color(0xFFAEB0B8)
-val OutlineDark = Color(0xFF2C3041)
+val BackgroundLight = Color(0xFFF1F5FF)
+val SurfaceLight = Color(0xFFE7ECFF)
+val PrimaryLight = BrandBlue
+val OnBackgroundLight = BrandNavy
+val OnSurfaceLight = BrandNavy
+val OnSurfaceVariantLight = BrandSlate
+val OutlineLight = Color(0xFFC7D2FE)
+
+val BackgroundDark = Color(0xFF111827)
+val SurfaceDark = Color(0xFF1E293B)
+val PrimaryDark = Color(0xFF6D86FF)
+val OnBackgroundDark = Color(0xFFF8FAFC)
+val OnSurfaceDark = Color(0xFFF8FAFC)
+val OnSurfaceVariantDark = Color(0xFFCBD5E1)
+val OutlineDark = Color(0xFF475569)
 
 // Semantic Accents
-val AccentTeal = Color(0xFF00BFA5)
-val AccentCoral = Color(0xFFFF6D00)
-val AccentPurple = Color(0xFF7C4DFF)
-val AccentRed = Color(0xFFFF5252)
+val AccentTeal = BrandTeal
+val AccentPurple = Color(0xFF6366F1)
+val AccentRed = BrandRed
+val AccentIndigo = BrandBlue
